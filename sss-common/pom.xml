@@ -11,6 +11,13 @@
 
     <groupId>com.zjsgj.sssplatform</groupId>
     <artifactId>sss-common</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.1.6.RELEASE</version>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
