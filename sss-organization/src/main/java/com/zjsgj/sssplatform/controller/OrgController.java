@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/org")
+@RequestMapping("/api/org")
 public class OrgController {
     @Autowired
     private OrgService orgService;

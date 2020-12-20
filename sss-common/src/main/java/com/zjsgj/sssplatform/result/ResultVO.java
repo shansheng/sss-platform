@@ -4,6 +4,8 @@ public class ResultVO<T>  {
     private Integer code;
     private String msg;
     private T data;
+    private Integer pageNo;
+    private Integer totalCount;
 
     public ResultVO(T data) {
         this(ResultCode.SUCCESS, data);
@@ -13,6 +15,8 @@ public class ResultVO<T>  {
         this.code = resultCode.getCode();
         this.msg = resultCode.getMsg();
         this.data = data;
+        this.pageNo=1;
+        this.totalCount=20;
     }
 
 
@@ -38,5 +42,13 @@ public class ResultVO<T>  {
 
     public T getData() {
         return data;
+    }
+
+    public Integer getPageNo() {
+        return pageNo;
+    }
+
+    public Integer getTotalCount() {
+        return totalCount;
     }
 }
