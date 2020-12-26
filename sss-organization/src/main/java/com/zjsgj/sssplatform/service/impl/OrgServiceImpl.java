@@ -5,8 +5,18 @@ import com.zjsgj.sssplatform.repository.OrgOrganizationRepository;
 import com.zjsgj.sssplatform.service.OrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrgServiceImpl implements OrgService {
@@ -20,8 +30,35 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Page<OrgOrganization> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<OrgOrganization> findAll(Map<String,Object> map, int page, int size) {
+        //1.需要查询条件
+        Specification<OrgOrganization> spec = new Specification<OrgOrganization>() {
+            /**
+             * 动态拼接查询条件
+             * @return
+             */
+            public Predicate toPredicate(Root<OrgOrganization> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> list = new ArrayList<>();
+                //根据请求的companyId是否为空构造查询条件
+                if(!StringUtils.isEmpty(map.get("pid"))) {
+                    list.add(criteriaBuilder.equal(root.get("parentorgid").as(String.class),(String)map.get("pid")));
+                }
+
+                if(!StringUtils.isEmpty(map.get("hasDept"))) {
+                    //根据请求的hasDept判断  是否分配部门 0未分配（departmentId = null），1 已分配 （departmentId ！= null）
+                    if("0".equals((String) map.get("hasDept"))) {
+                        list.add(criteriaBuilder.isNull(root.get("departmentId")));
+                    }else {
+                        list.add(criteriaBuilder.isNotNull(root.get("departmentId")));
+                    }
+                }
+                return criteriaBuilder.and(list.toArray(new Predicate[list.size()]));
+            }
+        };
+
+        //2.分页
+        Page<OrgOrganization> pageOrg = repository.findAll(spec,PageRequest.of(page-1, size));
+        return pageOrg;
     }
 
     @Override
