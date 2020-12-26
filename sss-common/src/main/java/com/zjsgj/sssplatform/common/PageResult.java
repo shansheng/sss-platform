@@ -25,5 +25,5 @@ import java.util.List;
 @NoArgsConstructor
 public class PageResult<T> {
     private Long total;
-    private List<T> rows;
+    private List<T> items;
 }

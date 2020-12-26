@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/org")
+@RequestMapping("/org")
 public class OrgController {
     @Autowired
     private OrgService orgService;
 
     @GetMapping
-    public Result findAll(int page, int size, @RequestParam Map map){
-        Page<OrgOrganization> pageUser = orgService.findAll(map,page,size);
+    public Result findAll(int page, int pageSize, @RequestParam Map map){
+        Page<OrgOrganization> pageUser = orgService.findAll(map,page,pageSize);
         //3.构造返回结果
         PageResult pageResult = new PageResult(pageUser.getTotalElements(),pageUser.getContent());
         return new Result(ResultCode.SUCCESS, pageResult);

@@ -11,7 +11,7 @@ package com.zjsgj.sssplatform.common;
  */
 public enum ResultCode {
 
-    SUCCESS(true,10000,"操作成功！"),
+    SUCCESS(true,0,"操作成功！"),
     //---系统错误返回码-----
     FAIL(false,10001,"操作失败"),
     UNAUTHENTICATED(false,10002,"您还未登录"),
