@@ -6,6 +6,7 @@ import com.zjsgj.sssplatform.service.OrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -56,9 +57,13 @@ public class OrgServiceImpl implements OrgService {
             }
         };
 
-        //2.分页
-        Page<OrgOrganization> pageOrg = repository.findAll(spec,PageRequest.of(page-1, size));
-        return pageOrg;
+
+        if (!StringUtils.isEmpty(map.get("field"))){
+
+            return repository.findAll(spec,PageRequest.of(page-1, size,Sort.by(!StringUtils.isEmpty(map.get("order"))&&"descend".equals(map.get("order").toString())? Sort.Direction.DESC: Sort.Direction.ASC ,map.get("field").toString())));
+        }
+
+        return repository.findAll(spec,PageRequest.of(page-1, size));
     }
 
     @Override
