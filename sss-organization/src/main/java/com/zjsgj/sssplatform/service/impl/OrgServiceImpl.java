@@ -45,12 +45,14 @@ public class OrgServiceImpl implements OrgService {
                     list.add(criteriaBuilder.equal(root.get("parentorgid").as(String.class),(String)map.get("pid")));
                 }
 
-                if(!StringUtils.isEmpty(map.get("hasDept"))) {
+                if(!StringUtils.isEmpty(map.get("orgname"))) {
+                    list.add(criteriaBuilder.like(root.get("orgname").as(String.class),"%" +(String)map.get("orgname")+"%"));
+                }
+
+                if(!StringUtils.isEmpty(map.get("status"))) {
                     //根据请求的hasDept判断  是否分配部门 0未分配（departmentId = null），1 已分配 （departmentId ！= null）
-                    if("0".equals((String) map.get("hasDept"))) {
-                        list.add(criteriaBuilder.isNull(root.get("departmentId")));
-                    }else {
-                        list.add(criteriaBuilder.isNotNull(root.get("departmentId")));
+                    if("running".equals((String) map.get("status"))) {
+                        list.add(criteriaBuilder.equal(root.get("status").as(String.class),(String)map.get("status")));
                     }
                 }
                 return criteriaBuilder.and(list.toArray(new Predicate[list.size()]));

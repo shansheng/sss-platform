@@ -1,0 +1,12 @@
+server:
+  port: 8087
+  servlet:
+    context-path: /sss
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/zjpedm?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    show-sql: true
